@@ -2,7 +2,7 @@
 name: bq-paper
 description: "Paper reader. Takes an academic paper (URL, PDF, or file), runs the atom pipeline (split→squeeze→plain→feynman→博导审稿), and synthesizes a fluent analysis. Focus: what gap does it fill, and would a seasoned advisor take it seriously? Use when user shares an arxiv link, paper URL, PDF, or asks to analyze a research paper. Trigger words: '读论文', '分析论文', 'paper', or when user shares an academic paper."
 user_invocable: true
-version: "1.0.0"
+version: "1.1.0"
 ---
 
 # bq-paper: 读论文
@@ -120,7 +120,7 @@ Before this paper vs after this paper，世界多了什么？
 
 ### 9. 缝合与卫生
 
-按 Markdown 结构，将以上结果编织成一篇连贯分析。
+按 `references/template.md` 的结构，将以上结果编织成一篇连贯分析。
 
 写完扫一遍：
 
@@ -128,11 +128,11 @@ Before this paper vs after this paper，世界多了什么？
 2. 三段式改两项或四项
 3. 同一段落破折号不超过两个
 
-列修改清单确认后生成 `.md` 文件。
+列修改清单确认后生成文件。
 
 ### 10. 生成 Markdown 文件
 
-按上述 Markdown 文件规范获取时间戳，写入 `~/Documents/notes/`。
+按上述 Markdown 文件规范获取时间戳，读 `references/template.md`，写入 `~/Documents/notes/`。
 
 ## 质量标准
 

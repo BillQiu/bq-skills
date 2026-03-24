@@ -9,6 +9,8 @@
 ├── AGENTS.md
 ├── README.md
 └── skills/
+    ├── bq-paper/
+    └── bq-paper-list/
 ```
 
 ## 组织约定

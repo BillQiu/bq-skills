@@ -10,7 +10,8 @@ description: Manage bill's Cloudflare estate (billq.cc) via API instead of the d
 ## 凭证
 
 ```bash
-CF_TOKEN=$(op read "op://Personal/Cloudflare API Token (claude-automation)/credential")
+CF_TOKEN=$(op item get "Cloudflare API Token (claude-automation)" --fields credential --reveal)
+# 注意:不能用 op read 的 op:// 引用,item 名里的括号会被判非法字符
 ```
 
 - Token 名 `claude-automation`,权限:**Access: Apps and Policies (Edit)**、**Cloudflare Tunnel (Edit)** — 账户级;**DNS (Edit)** — 仅 billq.cc。
@@ -31,10 +32,15 @@ CF_TOKEN=$(op read "op://Personal/Cloudflare API Token (claude-automation)/crede
 
 | 隧道 | ID | 跑在哪 | ingress 配置 |
 |---|---|---|---|
-| Air 隧道 | `8e17712a-110c-4f26-be28-1c8f42fe4cb5` | MacBook Air(局域网 `ssh -i ~/.ssh/id_zju_sby billqiu@192.168.5.21`,外网 `ssh air-remote`) | `~/.cloudflared/config.yml`,launchd label `com.billqiu.cloudflared-chatbot` |
+| Air 隧道 | `8e17712a-110c-4f26-be28-1c8f42fe4cb5` | MacBook Air(局域网 `ssh air-wifi`,Wi-Fi DHCP 现为 192.168.5.100 会漂移;外网 `ssh air-remote`) | `~/.cloudflared/config.yml`,launchd label `com.billqiu.cloudflared-chatbot` |
 | 另一条隧道 | `af70db12-df0f-4e70-a3fe-61bc80f84db6` | 凭证文件在本机 `~/.cloudflared/`,归属机器待确认(疑似 zspace NAS,ssh.billq.cc/qb 等走它) | — |
 
-**Air 隧道现有 hostname**:`chat.billq.cc`→:3000、`ssh-air.billq.cc`→ssh :22、`beszel.billq.cc`→:8091(Beszel 监控面板)
+**Air 隧道现有 hostname**:`chat.billq.cc`→:3000、`ssh-air.billq.cc`→ssh :22、`beszel.billq.cc`→:8091(Beszel 监控面板)、`vertex.billq.cc`→:3111(Vertex 刷流面板)
+
+**重启 cloudflared 的坑**:若当前 SSH 就走 air-remote(即这条隧道),直接 unload/load 会切断自己的会话。用脱离进程的方式:
+```bash
+ssh air-remote "nohup sh -c 'sleep 1; launchctl kickstart -k gui/\$(id -u)/com.billqiu.cloudflared-chatbot' >/dev/null 2>&1 & exit"
+```
 
 **Access 可复用策略**:
 
